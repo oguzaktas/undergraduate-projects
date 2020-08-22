@@ -1,0 +1,507 @@
+
+package main;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ * Programlama Laboratuvari II Proje 4
+ * @author Oguz Aktas
+ */
+public class ArabaWindow extends javax.swing.JFrame {
+
+    /**
+     * Creates new form ArabaWindow
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
+     */
+    public ArabaWindow() throws SQLException, ClassNotFoundException {
+        initComponents();
+        arabalaritablodaGoster();
+        comboboxgetList();
+    }
+    
+    public Connection getConnection() throws SQLException, ClassNotFoundException {
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/arac_alisveris", "root", "123456");
+            return conn;
+        } catch (SQLException ex) {
+            Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Veritabanina baglanti saglanamadi");
+        }
+        return null;
+    }
+    
+    public boolean checkInputs() {
+        if (text_marka.getText().trim().isEmpty() || text_model.getText().trim().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    public ArrayList<Araba> getArabaList() throws SQLException, ClassNotFoundException {
+        ArrayList<Araba> arabalistesi = new ArrayList<Araba>();
+        Connection conn = getConnection();
+        String query = "SELECT * FROM Tbl_Araba;";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            Araba araba;
+            while(rs.next()) {
+                araba = new Araba(rs.getInt("ArabaID"), rs.getString("Araba_Marka"), rs.getString("Araba_Model"), rs.getInt("Araba_VitesTuruID"), rs.getInt("Araba_YakitTuruID"), rs.getInt("Araba_RenkID"));
+                arabalistesi.add(araba);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arabalistesi;
+    }
+    
+    public void comboboxgetList() throws SQLException, ClassNotFoundException {
+        Connection conn = getConnection();
+        String query = "SELECT * FROM Tbl_VitesTuru;";
+        Statement st;
+        ResultSet rs;
+        try {
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()) {
+                combobox_vitesturu.addItem(rs.getString("Vites_Turu"));
+            }
+            query = "SELECT * FROM Tbl_YakitTuru;";
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()) {
+                combobox_yakitturu.addItem(rs.getString("Yakit_Turu"));
+            }
+            query = "SELECT * FROM Tbl_Renk;";
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            while(rs.next()) {
+                combobox_renk.addItem(rs.getString("Renk"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void arabalaritablodaGoster() throws SQLException, ClassNotFoundException {
+        ArrayList<Araba> list = getArabaList();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        Object[] kayit = new Object[6];
+        for (int i=0; i < list.size(); i++) {
+            kayit[0] = list.get(i).getId();
+            kayit[1] = list.get(i).getMarka();
+            kayit[2] = list.get(i).getModel();
+            kayit[3] = list.get(i).getVitesturuid();
+            kayit[4] = list.get(i).getYakitturuid();
+            kayit[5] = list.get(i).getRenkid();
+            model.addRow(kayit);
+        }
+    }
+    
+    public void showItem(int index) throws SQLException, ClassNotFoundException {
+        text_id.setText(Integer.toString(getArabaList().get(index).getId()));
+        text_marka.setText(getArabaList().get(index).getMarka());
+        text_model.setText(getArabaList().get(index).getModel());
+        combobox_vitesturu.setSelectedIndex((getArabaList().get(index).getVitesturuid())-1);
+        combobox_yakitturu.setSelectedIndex((getArabaList().get(index).getYakitturuid())-1);
+        combobox_renk.setSelectedIndex((getArabaList().get(index).getRenkid())-1);
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        label_renkid = new javax.swing.JLabel();
+        label_id = new javax.swing.JLabel();
+        label_marka = new javax.swing.JLabel();
+        label_model = new javax.swing.JLabel();
+        label_vitesturuid = new javax.swing.JLabel();
+        label_yakitturuid = new javax.swing.JLabel();
+        text_marka = new javax.swing.JTextField();
+        text_id = new javax.swing.JTextField();
+        text_model = new javax.swing.JTextField();
+        Btn_Update = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        Btn_Insert = new javax.swing.JButton();
+        Btn_Delete = new javax.swing.JButton();
+        Btn_Menu = new javax.swing.JButton();
+        combobox_vitesturu = new javax.swing.JComboBox<>();
+        combobox_renk = new javax.swing.JComboBox<>();
+        combobox_yakitturu = new javax.swing.JComboBox<>();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(102, 204, 255));
+
+        label_renkid.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_renkid.setText("Renk : ");
+
+        label_id.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_id.setText("Araba ID : ");
+
+        label_marka.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_marka.setText("Marka : ");
+
+        label_model.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_model.setText("Model : ");
+
+        label_vitesturuid.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_vitesturuid.setText("Vites Turu : ");
+
+        label_yakitturuid.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        label_yakitturuid.setText("Yakit Turu : ");
+
+        text_marka.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        text_marka.setPreferredSize(new java.awt.Dimension(69, 39));
+        text_marka.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_markaActionPerformed(evt);
+            }
+        });
+
+        text_id.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        text_id.setPreferredSize(new java.awt.Dimension(69, 39));
+        text_id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_idActionPerformed(evt);
+            }
+        });
+
+        text_model.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        text_model.setPreferredSize(new java.awt.Dimension(69, 39));
+        text_model.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                text_modelActionPerformed(evt);
+            }
+        });
+
+        Btn_Update.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        Btn_Update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java/icons/update.png"))); // NOI18N
+        Btn_Update.setText("Update");
+        Btn_Update.setIconTextGap(10);
+        Btn_Update.setPreferredSize(new java.awt.Dimension(131, 51));
+        Btn_Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_UpdateActionPerformed(evt);
+            }
+        });
+
+        jTable1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Araba ID", "Marka", "Model", "Vites Turu ID", "Yakit Turu ID", "Renk ID"
+            }
+        ));
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        Btn_Insert.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        Btn_Insert.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java/icons/add.png"))); // NOI18N
+        Btn_Insert.setText("Insert");
+        Btn_Insert.setIconTextGap(10);
+        Btn_Insert.setPreferredSize(new java.awt.Dimension(180, 51));
+        Btn_Insert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_InsertActionPerformed(evt);
+            }
+        });
+
+        Btn_Delete.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        Btn_Delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java/icons/delete.png"))); // NOI18N
+        Btn_Delete.setText("Delete");
+        Btn_Delete.setIconTextGap(10);
+        Btn_Delete.setPreferredSize(new java.awt.Dimension(131, 51));
+        Btn_Delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_DeleteActionPerformed(evt);
+            }
+        });
+
+        Btn_Menu.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        Btn_Menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/java/icons/home.png"))); // NOI18N
+        Btn_Menu.setText("Ana Ekrana Git");
+        Btn_Menu.setIconTextGap(10);
+        Btn_Menu.setPreferredSize(new java.awt.Dimension(180, 51));
+        Btn_Menu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Btn_MenuActionPerformed(evt);
+            }
+        });
+
+        combobox_vitesturu.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        combobox_vitesturu.setPreferredSize(new java.awt.Dimension(36, 23));
+
+        combobox_renk.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        combobox_yakitturu.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(label_yakitturuid)
+                                    .addComponent(label_id)
+                                    .addComponent(label_marka)
+                                    .addComponent(label_model)
+                                    .addComponent(label_vitesturuid)
+                                    .addComponent(label_renkid))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(text_model, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                                    .addComponent(text_marka, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(text_id, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(combobox_renk, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(combobox_yakitturu, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(combobox_vitesturu, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(Btn_Menu, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(Btn_Insert, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(Btn_Update, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(Btn_Delete, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(label_id)
+                            .addComponent(text_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(label_marka)
+                            .addComponent(text_marka, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(label_model)
+                            .addComponent(text_model, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(label_vitesturuid)
+                            .addComponent(combobox_vitesturu, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(label_yakitturuid)
+                            .addComponent(combobox_yakitturu, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(label_renkid)
+                            .addComponent(combobox_renk, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(114, 114, 114)
+                        .addComponent(Btn_Menu, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 619, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Btn_Delete, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_Update, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Btn_Insert, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void text_markaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_markaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_markaActionPerformed
+
+    private void text_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_idActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_idActionPerformed
+
+    private void text_modelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_text_modelActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_text_modelActionPerformed
+
+    private void Btn_UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_UpdateActionPerformed
+        if (checkInputs() && text_id.getText() != null) {
+            String query = null;
+            Connection conn = null;
+            try {
+                conn = getConnection();
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            PreparedStatement ps = null;
+            query = "UPDATE Tbl_Araba SET Araba_Marka = ?, Araba_Model = ?, Araba_VitesTuruID = ?, Araba_YakitTuruID = ?, Araba_RenkID = ? WHERE ArabaID = ?;";
+            try {
+                ps = conn.prepareStatement(query);
+                ps.setString(1, text_marka.getText());
+                ps.setString(2, text_model.getText());
+                ps.setInt(3, combobox_vitesturu.getSelectedIndex()+1);
+                ps.setInt(4, combobox_yakitturu.getSelectedIndex()+1);
+                ps.setInt(5, combobox_renk.getSelectedIndex()+1);
+                ps.setInt(6, Integer.parseInt(text_id.getText()));
+                ps.executeUpdate();
+                arabalaritablodaGoster();
+                JOptionPane.showMessageDialog(null, "Kayit guncellendi.");
+            } catch (SQLException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Kayit guncelleme sirasinda hata olustu.");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Bir ya da daha fazla alani bos biraktiniz.");
+        }
+    }//GEN-LAST:event_Btn_UpdateActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        int index = jTable1.getSelectedRow();
+        try {
+            showItem(index);
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void Btn_InsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_InsertActionPerformed
+        if (checkInputs()) {
+            Connection conn = null;
+            try {
+                conn = getConnection();
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            PreparedStatement ps;
+            try {
+                if (text_id.getText().trim().isEmpty()) {
+                    ps = conn.prepareStatement("INSERT INTO Tbl_Araba(Araba_Marka, Araba_Model, Araba_VitesTuruID, Araba_YakitTuruID, Araba_RenkID) VALUES(?, ?, ?, ?, ?);");
+                    ps.setString(1, text_marka.getText());
+                    ps.setString(2, text_model.getText());
+                    ps.setInt(3, combobox_vitesturu.getSelectedIndex()+1);
+                    ps.setInt(4, combobox_yakitturu.getSelectedIndex()+1);
+                    ps.setInt(5, combobox_renk.getSelectedIndex()+1);
+                } else {
+                    ps = conn.prepareStatement("INSERT INTO Tbl_Araba(ArabaID, Araba_Marka, Araba_Model, Araba_VitesTuruID, Araba_YakitTuruID, Araba_RenkID) VALUES(?, ?, ?, ?, ?, ?);");
+                    ps.setString(1, text_id.getText());
+                    ps.setString(2, text_marka.getText());
+                    ps.setString(3, text_model.getText());
+                    ps.setInt(4, combobox_vitesturu.getSelectedIndex()+1);
+                    ps.setInt(5, combobox_yakitturu.getSelectedIndex()+1);
+                    ps.setInt(6, combobox_renk.getSelectedIndex()+1);
+                }
+                ps.executeUpdate();
+                arabalaritablodaGoster();
+                JOptionPane.showMessageDialog(null, "Kayit eklendi.");
+            } catch (SQLException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Kayit ekleme sirasinda hata olustu.");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Bir ya da daha fazla alani bos biraktiniz.");
+        }
+    }//GEN-LAST:event_Btn_InsertActionPerformed
+
+    private void Btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_DeleteActionPerformed
+        if(!text_id.getText().equals("")) {
+            Connection conn = null;
+            try {
+                conn = getConnection();
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                PreparedStatement ps = conn.prepareStatement("DELETE FROM Tbl_Araba WHERE ArabaID = ?;");
+                int id = Integer.parseInt(text_id.getText());
+                ps.setInt(1, id);
+                ps.executeUpdate();
+                arabalaritablodaGoster();
+                JOptionPane.showMessageDialog(null, "Kayit silindi.");
+            } catch (SQLException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Kayit silinme sirasinda hata olustu.");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ArabaWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Kayit silinemedi. Dogru ID numarasini girdiginizden emin olun.");
+        }
+    }//GEN-LAST:event_Btn_DeleteActionPerformed
+
+    private void Btn_MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_MenuActionPerformed
+        this.dispose();
+        new MainWindow().setVisible(true);
+    }//GEN-LAST:event_Btn_MenuActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Btn_Delete;
+    private javax.swing.JButton Btn_Insert;
+    private javax.swing.JButton Btn_Menu;
+    private javax.swing.JButton Btn_Update;
+    private javax.swing.JComboBox<String> combobox_renk;
+    private javax.swing.JComboBox<String> combobox_vitesturu;
+    private javax.swing.JComboBox<String> combobox_yakitturu;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel label_id;
+    private javax.swing.JLabel label_marka;
+    private javax.swing.JLabel label_model;
+    private javax.swing.JLabel label_renkid;
+    private javax.swing.JLabel label_vitesturuid;
+    private javax.swing.JLabel label_yakitturuid;
+    private javax.swing.JTextField text_id;
+    private javax.swing.JTextField text_marka;
+    private javax.swing.JTextField text_model;
+    // End of variables declaration//GEN-END:variables
+}
