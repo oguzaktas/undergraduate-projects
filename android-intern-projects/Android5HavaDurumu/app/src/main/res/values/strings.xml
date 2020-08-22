@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Android5-HavaDurumu</string>
+    <string name="hava_durumunu_goster">Hava Durumunu Göster</string>
+    <string name="sehri_giriniz">Şehri giriniz</string>
+</resources>

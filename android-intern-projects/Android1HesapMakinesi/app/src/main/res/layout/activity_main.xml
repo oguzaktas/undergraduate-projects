@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.oguz.android1_hesapmakinesi.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="21dp"
+        android:padding="4dp"
+        android:text="1.sayi"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_marginRight="37dp"
+        android:layout_marginEnd="37dp"
+        android:id="@+id/et_birinciSayi"
+        android:layout_alignBaseline="@+id/textView"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/et_ikinciSayi"
+        android:layout_below="@+id/et_birinciSayi"
+        android:layout_alignLeft="@+id/et_birinciSayi"
+        android:layout_alignStart="@+id/et_birinciSayi" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/et_ikinciSayi"
+        android:layout_alignBottom="@+id/et_ikinciSayi"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:padding="4dp"
+        android:text="2.sayi"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_sonuc"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:padding="4dp"
+        android:text="Sonuç:"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_marginTop="33dp"
+        android:id="@+id/tv_sonuc"
+        android:layout_height="50dp"
+        android:layout_width="215dp"
+        android:textSize="20sp"
+        android:layout_below="@+id/et_ikinciSayi"
+        android:layout_alignLeft="@+id/et_ikinciSayi"
+        android:layout_alignStart="@+id/et_ikinciSayi" />
+
+    <Button
+        android:text="Topla"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_topla"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="500dp" />
+
+    <Button
+        android:id="@+id/btn_temizle"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_bol"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="Temizle" />
+
+    <Button
+        android:text="Böl"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_bol"
+        android:layout_below="@+id/btn_carp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:text="Çarp"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_carp"
+        android:layout_below="@+id/btn_cikar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+
+    <Button
+        android:text="Çıkar"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_cikar"
+        android:layout_below="@+id/btn_topla"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="13dp" />
+</RelativeLayout>
