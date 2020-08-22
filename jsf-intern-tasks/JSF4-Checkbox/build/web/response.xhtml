@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>JSF4-Checkbox</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            The student is confirmed: <h:outputText value="#{UserCtrl.firstname} #{UserCtrl.lastname}"/>
+            <br/><br/>
+            The student's favorite programming language: 
+            <ul>
+                <ui:repeat value="#{UserCtrl.lang}" var="templang">
+                    <li>#{templang}</li>
+                </ui:repeat>
+            </ul>
+        </h:form>
+    </h:body>
+</html>

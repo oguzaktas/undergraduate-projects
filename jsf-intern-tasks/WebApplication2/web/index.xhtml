@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>JSF Form Bilesenleri ve Managed Beans</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputText value="isim soyisim giriniz:"/>
+                <h:inputText value="#{managedBeanSinif.isim}"/>
+                
+                <h:outputText value="cinsiyetiniz nedir?"/>
+                <h:selectManyCheckbox value="#{managedBeanSinif.cinsiyet}">
+                    <f:selectItem itemLabel="Bayan" itemValue="Bayan"/>
+                    <f:selectItem itemLabel="Erkek" itemValue="Erkek"/>
+                </h:selectManyCheckbox>
+                
+                <h:outputText value="ehliyetiniz var mi?"/>
+                <h:selectOneRadio value="#{managedBeanSinif.ehliyetvarmi}">
+                    <f:selectItem itemLabel="Evet" itemValue="Evet"/>
+                    <f:selectItem itemLabel="Hayir" itemValue="Hayir"/>
+                </h:selectOneRadio>
+                
+                <h:outputText value="adres giriniz:"/>
+                <h:inputTextarea value="#{managedBeanSinif.adres}"/>
+        
+                <h:outputText value="il seciniz:"/>
+                <h:selectOneMenu value="#{managedBeanSinif.il}">
+                    <f:selectItem itemLabel="Istanbul" itemValue="Istanbul"/>
+                    <f:selectItem itemLabel="Ankara" itemValue="Ankara"/>
+                </h:selectOneMenu>
+        
+                <h:outputText value="JSF resmi"/>
+                <h:graphicImage library="images" name="jsf.png"/>
+                
+                <h:outputText value="parola giriniz:"/>
+                <h:inputSecret value="#{managedBeanSinif.parola}"/>
+        
+                <h:outputText value="Buton ile veri gonderimi"/>
+                <h:commandButton value="Gonder"/>
+                
+                <h:outputText value="Link ile veri gonderimi"/>
+                <h:commandLink value="Gonder"/>
+                
+                <h:outputText value="OutputLink kullanimi"/>
+                <h:outputLink value="http://www.oguzaktas.net">oguzaktas</h:outputLink>
+                
+                <h:outputText value="Verdiginiz bilgilerin dogrulugunu kabul ediyor musunuz?"/>
+                <h:selectBooleanCheckbox value="#{managedBeanSinif.kabuledildimi}"/>
+            </h:panelGrid>
+            
+            <h:panelGrid columns="1">
+                <h3>Girdiginiz bilgiler</h3>
+                <h:outputText value="#{managedBeanSinif.mesaj}" style="color: red"/>
+                <h:outputText value="İsim Soyisim. #{managedBeanSinif.isim}"/>
+                <h:outputText value="Cinsiyet. #{managedBeanSinif.cinsiyet}"/>
+                <h:outputText value="Ehliyet. #{managedBeanSinif.ehliyetvarmi}"/>
+                <h:outputText value="İl. #{managedBeanSinif.il}"/>
+                <h:outputText value="Adres. #{managedBeanSinif.adres}"/>
+                <h:outputText value="Parola. #{managedBeanSinif.parola}"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+
